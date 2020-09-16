@@ -68,7 +68,7 @@ pm_pip() {
 
 pm_sh() {
     case "$1" in
-    !) shift; env sh -c "$2";;
+    !) shift; env sh -c "$1";;
     present) true;;
     esac
 }
