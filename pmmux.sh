@@ -61,7 +61,7 @@ pm_pacman() {
 
 pm_pip() {
     case "$1" in
-    +) shift; env pip install "$@";;
+    +) shift; sudo pip install "$@";;
     present) exists pip3 || exists pip;;
     esac
 }
