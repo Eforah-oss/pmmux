@@ -28,6 +28,14 @@ pm_brew() {
     esac
 }
 
+pm_dnf() {
+    case "$1" in
+    +) shift; sudo dnf install -y "$@";;
+    !) shift; $*;;
+    present) exists dnf;;
+    esac
+}
+
 pm_go() {
     case "$1" in
     +) shift; env go get "$@";;
