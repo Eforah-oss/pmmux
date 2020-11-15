@@ -49,9 +49,8 @@ pm_git() {
         set -x
         set -- "${2%% *}" "${2#* }"
         set -- "$1" "${2%% *}" "${2#* }" "$(mktemp -d)" "$PWD"
-        env git clone --recurse-submodules "$1" "$4" >&2
+        env git clone --branch "$2" --recurse-submodules "$1" "$4" >&2
         cd "$4"
-        env git checkout "$2" >&2
         env sh -c "$3"
         cd "$5"
         rm -rf "$4"
