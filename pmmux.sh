@@ -66,6 +66,7 @@ pm_git() {
 pm_pacman() {
     case "$1" in
     +) shift; sudo pacman --needed --noconfirm -qS "$@";;
+    !) shift; $*;;
     present) exists pacman;;
     esac
 }
