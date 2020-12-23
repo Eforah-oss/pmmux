@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #pmmux - package manager multiplexer
-set -xeu
+set -eu
 
 # FUNCTIONS -------------------------------------------------------------------
 exists() { sh -c 'command -v "$1" >/dev/null 2>&1' -- "$1"; }
