@@ -100,6 +100,7 @@ pmmux() {
             break;
         fi
     done
+    [ -n "${exec:-}" ] || return
     eval "set -- ${exec:-}"
     if [ -n "${1:-}" ] && [ "$(command -v "$(basename "$1")")" != "$1" ]; then
         exec="$(basename "$1")"; shift; set -- "$exec" "$@"
