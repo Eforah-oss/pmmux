@@ -91,6 +91,12 @@ pmmux() {
         exec="$(save "$@")"
         eval "set -- $(cat "$1" | sed '/^#!.*pmmux/d')"
     fi
+    if [ "$1" = "-1" ]; then
+        shift
+    else
+        echo "Please run as pmmux -1 ... for future compatibility" >&2
+        exit 1
+    fi
     for x in "$@"; do
         if pm_"${x%%[+!]*}" present; then
             case "$(echo "$x" | sed -n '1s/^[^+!]*\(.\).*/\1/p')" in
