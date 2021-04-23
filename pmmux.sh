@@ -12,37 +12,37 @@ save () {
 # PACKAGE MANAGERS ------------------------------------------------------------
 pm_apk() {
     case "$1" in
-    +) shift; sudo apk add -q "$@";;
+    +) shift; sudo apk add -q "$@" >&2;;
     present) exists apk;;
     esac
 }
 
 pm_apt() {
     case "$1" in
-    +) shift; sudo apt-get install -qy "$@";;
+    +) shift; sudo apt-get install -qy "$@" >&2;;
     present) exists apt-get;;
     esac
 }
 
 pm_brew() {
     case "$1" in
-    +) shift; env brew install "$@";;
-    !) shift; $*;;
+    +) shift; env brew install "$@" >&2;;
+    !) shift; $* >&2;;
     present) exists brew;;
     esac
 }
 
 pm_dnf() {
     case "$1" in
-    +) shift; sudo dnf install -y "$@";;
-    !) shift; $*;;
+    +) shift; sudo dnf install -y "$@" >&2;;
+    !) shift; $* >&2;;
     present) exists dnf;;
     esac
 }
 
 pm_go() {
     case "$1" in
-    +) shift; env go get "$@";;
+    +) shift; env go get "$@" >&2;;
     present) exists go;;
     esac
 }
@@ -55,7 +55,7 @@ pm_git() {
         set -- "$1" "${2%% *}" "${2#* }" "$(mktemp -d)" "$PWD"
         env git clone --branch "$2" --recurse-submodules "$1" "$4" >&2
         cd "$4"
-        env sh -c "$3"
+        env sh -c "$3" >&2
         cd "$5"
         rm -rf "$4"
         ;;
@@ -65,22 +65,22 @@ pm_git() {
 
 pm_pacman() {
     case "$1" in
-    +) shift; sudo pacman --needed --noconfirm -qS "$@";;
-    !) shift; $*;;
+    +) shift; sudo pacman --needed --noconfirm -qS "$@" >&2;;
+    !) shift; $* >&2;;
     present) exists pacman;;
     esac
 }
 
 pm_pip() {
     case "$1" in
-    +) shift; sudo pip install "$@";;
+    +) shift; sudo pip install "$@" >&2;;
     present) exists pip3 || exists pip;;
     esac
 }
 
 pm_sh() {
     case "$1" in
-    !) shift; env sh -c "$1";;
+    !) shift; env sh -c "$1" >&2;;
     present) true;;
     esac
 }
