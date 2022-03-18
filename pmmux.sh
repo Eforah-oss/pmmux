@@ -42,7 +42,7 @@ pm_dnf() {
 
 pm_go() {
     case "$1" in
-    +) shift; env go get "$@" >&2;;
+    +) shift; env go install "$@@latest" >&2;;
     present) exists go;;
     esac
 }
