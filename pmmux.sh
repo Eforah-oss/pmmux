@@ -32,6 +32,14 @@ pm_brew() {
     esac
 }
 
+pm_choco() {
+    case "$1" in
+    +) shift; env choco.exe install -y "$@" >&2;;
+    !) shift; powershell.exe -c "$*" >&2;;
+    present) exists choco.exe;;
+    esac
+}
+
 pm_dnf() {
     case "$1" in
     +) shift; sudo dnf install -y "$@" >&2;;
