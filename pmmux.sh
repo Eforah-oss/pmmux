@@ -9,6 +9,25 @@ save () {
     echo " "
 }
 
+pwsh_quote() {
+    for x do
+        printf %s "$x" | sed "
+            s/\`/\`\`/g;
+            s/'/''/g;
+            1s/^/('/;
+            s/\$/' \`/;
+            \$s/ \`$/) /;
+            2,\$s/^/ + '/
+        "
+    done | head -c -1
+}
+
+elevate_windows_privilege() {
+    powershell.exe -c \
+        "Start-Process -Wait -Verb RunAs powershell '-Command',$(pwsh_quote \
+            "& $(pwsh_quote "$@")")"
+}
+
 # PACKAGE MANAGERS ------------------------------------------------------------
 pm_apk() {
     case "$1" in
@@ -34,8 +53,8 @@ pm_brew() {
 
 pm_choco() {
     case "$1" in
-    +) shift; env choco.exe install -y "$@" >&2;;
-    !) shift; powershell.exe -c "$*" >&2;;
+    +) shift; elevate_windows_privilege choco.exe install -y "$@" >&2;;
+    !) shift; elevate_windows_privilege powershell.exe -c "$*" >&2;;
     present) exists choco.exe;;
     esac
 }
