@@ -112,6 +112,13 @@ pm_sh() {
     esac
 }
 
+pm_workspace() {
+    case "$1" in
+    !) workspace in "${2%% *}" sh -c "${2#* }";;
+    present) exists workspace;;
+    esac
+}
+
 # MAIN ------------------------------------------------------------------------
 pmmux() {
     if [ -x "$1" ]; then
