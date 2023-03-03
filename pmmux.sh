@@ -32,6 +32,7 @@ elevate_windows_privilege() {
 pm_apk() {
     case "$1" in
     +) shift; sudo apk add -q "$@" >&2;;
+    !) shift; sh -c "$1" >&2;;
     present) exists apk;;
     esac
 }
@@ -39,6 +40,7 @@ pm_apk() {
 pm_apt() {
     case "$1" in
     +) shift; sudo apt-get install -qy "$@" >&2;;
+    !) shift; sh -c "$1" >&2;;
     present) exists apt-get;;
     esac
 }
@@ -46,7 +48,7 @@ pm_apt() {
 pm_brew() {
     case "$1" in
     +) shift; env brew install "$@" >&2;;
-    !) shift; $* >&2;;
+    !) shift; sh -c "$1" >&2;;
     present) exists brew;;
     esac
 }
@@ -54,7 +56,7 @@ pm_brew() {
 pm_choco() {
     case "$1" in
     +) shift; elevate_windows_privilege choco.exe install -y "$@" >&2;;
-    !) shift; elevate_windows_privilege powershell.exe -c "$*" >&2;;
+    !) shift; elevate_windows_privilege powershell.exe -c "$1" >&2;;
     present) exists choco.exe;;
     esac
 }
@@ -62,7 +64,7 @@ pm_choco() {
 pm_dnf() {
     case "$1" in
     +) shift; sudo dnf install -y "$@" >&2;;
-    !) shift; $* >&2;;
+    !) shift; sh -c "$1" >&2;;
     present) exists dnf;;
     esac
 }
@@ -70,6 +72,7 @@ pm_dnf() {
 pm_go() {
     case "$1" in
     +) shift; env go install "$@@latest" >&2;;
+    !) shift; sh -c "$1" >&2;;
     present) exists go;;
     esac
 }
@@ -93,7 +96,7 @@ pm_git() {
 pm_pacman() {
     case "$1" in
     +) shift; sudo pacman --needed --noconfirm -qS "$@" >&2;;
-    !) shift; $* >&2;;
+    !) shift; sh -c "$1" >&2;;
     present) exists pacman;;
     esac
 }
@@ -101,6 +104,7 @@ pm_pacman() {
 pm_pip() {
     case "$1" in
     +) shift; sudo pip install "$@" >&2;;
+    !) shift; sh -c "$1" >&2;;
     present) exists pip3 || exists pip;;
     esac
 }
