@@ -6,11 +6,11 @@ a system: installing other software using the relevant package
 manager. Which package manager that is, is determined at runtime. That
 is the power of `pmmux`. Let's see why this is useful with an example:
 
-    pmmux -1 apk+py3-pip apt+python3-pip brew+python pacman+python-pip
+    pmmux -1 choco+pip apt+python3-pip brew+python pacman+python-pip
 
 As you can probably guess, this installs pip. The added value is in
-the fact that this command works on a few Linux distributions and even
-macOS. Read on if you want to learn more.
+the fact that this command works on a few Linux distributions, macOS,
+and even Windows! Read on if you want to learn more.
 
 ### Is `pmmux` for me?
 
@@ -26,7 +26,6 @@ Like the example above, but I'll elaborate later.
 
 ### Where does it work?
 
-All UNIX-like systems. It only requires a POSIX compatible shell, and
-some package manager. In other terms: every modern operating system
-except for Windows. It works fine in the WSL, and support for using
-Chocolatey in the Windows host is planned.
+UNIX-like systems and Windows. In other words: every modern operating
+system such as macOS, Windows, Linux etc. It works fine in the WSL,
+transparently calling choco.exe if it is available.
