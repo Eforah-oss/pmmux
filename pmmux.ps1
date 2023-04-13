@@ -8,11 +8,9 @@ function pmmux {
   :processArgs foreach ($arg in $Args[1..$Args.Length]) {
     $arg | ForEach-Object {
       if ($_ -match "^([a-z]*)\+(.*)$") {
-        switch ($Matches[1]) {
-          "choco" {
-            pm_choco $Matches[2]
-            break processArgs
-          }
+        if (Get-Command "pm_$($Matches[1])") {
+          & "pm_$($Matches[1])" ($Matches[2] -split " ")
+          break processArgs
         }
       }
     }
