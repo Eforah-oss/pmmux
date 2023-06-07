@@ -20,12 +20,24 @@ from different sources. This might include team leads who want to provide
 a script to install the system dependencies of a software project to their
 colleagues without resorting to heavyweight technologies like Docker.
 
-### How do I use it?
+### How does it work?
 
-Like the example above, but I'll elaborate later.
+`pmmux` is given a list of package managers and their arguments like
+the example above. This first package manager actually present on the
+system it is run on is used to install the package name given in that
+argument.
 
 ### Where does it work?
 
 UNIX-like systems and Windows. In other words: every modern operating
 system such as macOS, Windows, Linux etc. It works fine in the WSL,
 transparently calling choco.exe if it is available.
+
+## Installation
+### Windows (PowerShell)
+    irm 'https://raw.githubusercontent.com/Eforah-oss/pmmux/master/pmmux.ps1' `
+        | % {$_ - replace "pmmux @args$", "pmmux -1 pmmux+pmmux"} | iex
+### macOS/Linux etc.
+    git clone https://github.com/Eforah-oss/pmmux
+    cd pmmux
+    sudo make install
