@@ -32,12 +32,10 @@ function pmmux {
     throw "Please run as pmmux -1 ... for future compatibility"
   }
   :processArgs foreach ($arg in $Args[1..$Args.Length]) {
-    $arg | ForEach-Object {
-      if ($_ -match "^([a-z]*)\+(.*)$") {
-        if (Get-Command "pm_$($Matches[1])") {
-          & "pm_$($Matches[1])" ($Matches[2] -split " ")
-          break processArgs
-        }
+    if ($arg -match "^([a-z]*)\+(.*)$") {
+      if (Get-Command "pm_$($Matches[1])") {
+        & "pm_$($Matches[1])" ($Matches[2] -split " ")
+        break processArgs
       }
     }
   }
