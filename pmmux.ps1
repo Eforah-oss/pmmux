@@ -20,7 +20,14 @@ function pmmux {
       [Environment]::SetEnvironmentVariable($x, [NullString]::value, 'User')
     }
   }
+  function Sync-Path {
+    $env:PATH = "$((Get-ItemProperty -Path `
+      'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\' `
+      -Name 'PATH').Path);$((Get-ItemProperty -Path 'HKCU:\Environment' `
+      -Name 'PATH').Path)"
+  }
   function pm_choco {
+    Sync-Path
     choco.exe install -y @Args
   }
   function pm_pmmux {
@@ -33,6 +40,7 @@ function pmmux {
       Set-Content (Join-Path $pmmuxPath pmmux.bat) `
         "powershell.exe -NoLogo -NoProfile -File ""$pmmuxPath\pmmux.ps1"" %*"
       Add-Path $pmmuxPath
+      Sync-Path
     }
     elseif ("init-lazyloaders") {
       if (!($env:PMMUX_LAZY_HOME)) {
@@ -53,6 +61,7 @@ function pmmux {
         } | Set-Content -Path (Join-Path $env:PMMUX_LAZY_BIN "$($_.Name).bat") -Encoding ASCII
       }
       Add-Path "$env:PMMUX_LAZY_BIN"
+      Sync-Path
     }
   }
   if ("-1" -ne $Args[0]) {
