@@ -26,9 +26,47 @@ function pmmux {
       -Name 'PATH').Path);$((Get-ItemProperty -Path 'HKCU:\Environment' `
       -Name 'PATH').Path)"
   }
+  function ConvertTo-PwshArgument {
+    param (
+      [string[]]$Arguments
+    )
+
+    $result = ""
+    foreach ($arg in $Arguments) {
+      # Escape PowerShell special characters
+      $escapedArg = $arg -replace '\`', '``' -replace "'", "''"
+      # Concatenate arguments
+      $result += "'$escapedArg' "
+    }
+    return $result.TrimEnd()
+  }
+
+  function Invoke-ElevatedCommand {
+    param (
+      [Parameter(Position = 0, Mandatory = $true, ValueFromRemainingArguments = $true)]
+      [string[]]$Command
+    )
+
+    # Convert command array to a single string with PowerShell argument escaping
+    $quotedCommand = ConvertTo-PwshArgument -Arguments $Command
+
+    # Command to be executed with elevation, ensuring it waits for completion
+    $scriptBlock = "& { Invoke-Expression $quotedCommand }"
+    # Invoke the command with elevation
+    Start-Process powershell.exe -ArgumentList "/noprofile", "-Command", $scriptBlock -Verb RunAs -Wait -WindowStyle Hidden
+  }
+
   function pm_choco {
+    param (
+      [Parameter(Position = 0, ValueFromPipeline, ValueFromRemainingArguments)]
+      [string[]] $Arguments
+    )
+
+    $ChocoArgs = @('install', '-y') + $Arguments
+    $ChocoCommand = "choco.exe $ChocoArgs"
+
+    Invoke-ElevatedCommand -Command $ChocoCommand
     Sync-Path
-    choco.exe install -y @Args
   }
   function pm_pmmux {
     if ("pmmux" -eq $Args[0]) {
