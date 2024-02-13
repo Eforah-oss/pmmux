@@ -33,8 +33,8 @@ function pmmux {
   }
   :processArgs foreach ($arg in $Args[1..$Args.Length]) {
     if ($arg -match "^([a-z]*)\+(.*)$") {
-      if (Get-Command "pm_$($Matches[1])") {
-        & "pm_$($Matches[1])" ($Matches[2] -split " ")
+      if (Get-Command "pm_$($Matches[1])" -ErrorAction SilentlyContinue) {
+        & "pm_$($Matches[1])" @($Matches[2] -split " ")
         break processArgs
       }
     }
