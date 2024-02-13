@@ -56,6 +56,17 @@ function pmmux {
     Start-Process powershell.exe -ArgumentList "/noprofile", "-Command", $scriptBlock -Verb RunAs -Wait -WindowStyle Hidden
   }
 
+  function pm_powershell {
+    param (
+      [Parameter(Position = 0, ValueFromPipeline, ValueFromRemainingArguments)]
+      [string[]]
+      $Arguments
+    )
+
+    Invoke-ElevatedCommand -Command $Arguments
+    Sync-Path
+  }
+
   function pm_choco {
     param (
       [Parameter(Position = 0, ValueFromPipeline, ValueFromRemainingArguments)]
