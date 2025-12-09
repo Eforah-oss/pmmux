@@ -109,6 +109,14 @@ pm_pip() {
     esac
 }
 
+pm_pipx() {
+    case "$1" in
+    +) shift; pipx install "$@" >&2;;
+    !) shift; sh -c "$1" >&2;;
+    present) exists pipx;;
+    esac
+}
+
 pm_sh() {
     case "$1" in
     !) shift; env sh -c "$1" >&2;;
