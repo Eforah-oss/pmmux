@@ -47,7 +47,7 @@ pm_apt() {
 
 pm_brew() {
     case "$1" in
-    +) shift; env brew install "$@" >&2;;
+    +) shift; env brew install -qy "$@" >&2;;
     !) shift; sh -c "$1" >&2;;
     present) exists brew;;
     esac
